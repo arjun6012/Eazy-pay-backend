@@ -32,15 +32,15 @@ const signupSchema = new schema({
     timestamps: true
 })
 
-// signupSchema.pre('save', function(next){
-//     if(this.isModified('password')){
-//         bcrypt.hash(this.password, 8, (err, hash) => {
-//             if(err) return next (err);
-//             this.password = hash;
-//             next();
-//         })
-//     }
-// })
+ signupSchema.pre('save', function(next){
+     if(this.isModified('password')){
+         bcrypt.hash(this.password, 8, (err, hash) => {
+             if(err) return next (err);
+             this.password = hash;
+             next();
+         })
+     }
+ })
 
 const signup = mongoose.model('signup',signupSchema);
 module.exports = signup;

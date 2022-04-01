@@ -15,8 +15,13 @@ signupRouter.post('/', (req, res) => {
 
     const newUser = new Signup({fullName, email, phoneNumber, password});
     newUser.save()
-    .then(() => res.json('User added'))
-    .catch(err => res.status(400).json('Error: '+err))
+    .then(data => {
+        console.log(data)
+        res.json({ msg: 'User added' })
+    })
+    .catch(err => {
+        res.json({ error: "Email already exists" })
+    })
 })
 
 module.exports = signupRouter

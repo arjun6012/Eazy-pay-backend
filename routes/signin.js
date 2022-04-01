@@ -11,21 +11,29 @@ signinRouter.post('/', (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    const user = await Signup.findOne({
-        email: body.username
-    })
+    //const user = await Signup.findOne({
+    //    email: body.username
+    //})
 
     // const newUser = new Signin({email, password});
-    // newUser.save()
-    // .then(() => res.json('Login Successfull'))
+    // newUser.save()res
+    // .then(() => .json('Login Successfull'))
     // .catch(err => res.status(400).json('Error: '+err))
 
-    if (password == user.password) {
-        res.json({ msg: "Success" })
-    }
+    const user = await Signup.findOne({
+        $or: [{ usermail: body.email }, { userpass: body.password }]
+    })
 
-    else {
-        res.json({ msg: "Invalid credentials" })
+    if (email == usermail){
+        if (password == userpass) {
+            res.json({ msg: "Success" })
+        }
+        else{
+            res.json({ msg: "Password is incorrect"})
+        }
+    }
+    else{
+        res.json({ msg: "Email doesn't exist" })
     }
 })
 
