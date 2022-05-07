@@ -6,7 +6,9 @@ const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 
 const signupRouter = require('./routes/signup')
-
+const signinRouter = require('./routes/signin')
+const cardinfoRouter = require('./routes/cardinfo')
+const addmoneyRouter = require('./routes/addmoney')
 
 const app = express()
 
@@ -29,6 +31,9 @@ app.get('/', (request, response) => {
 })
 
 app.use('/SignUp', signupRouter)
+app.use('/Login',signinRouter)
+app.use('/Card', cardinfoRouter)
+app.use('/AddMoney', addmoneyRouter)
     
 app.use(middleware.unknownEndPoint)
 app.use(middleware.errorHandler)

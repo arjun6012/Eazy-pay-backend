@@ -1,40 +1,40 @@
-const signinRouter = require('express').Router();
-let Signup = require('../models/signupModel');
+//const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
+const loginRouter = require('express').Router()
 
-// signinRouter.get('/', (req,res) => {
-//     Signin.find()
-//     .then(signin => res.json(signin))
-//     .catch(err => res.status(400).json('Error: '+err));
-// })
+const User = require('../models/signupModel')
 
-signinRouter.post('/', (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
-
-    //const user = await Signup.findOne({
-    //    email: body.username
-    //})
-
-    // const newUser = new Signin({email, password});
-    // newUser.save()res
-    // .then(() => .json('Login Successfull'))
-    // .catch(err => res.status(400).json('Error: '+err))
-
-    const user = await Signup.findOne({
-        $or: [{ usermail: body.email }, { userpass: body.password }]
+loginRouter.post('/', async (req, res) => {
+    var username=req.body.email
+    var password=req.body.password
+    User.findOne({$or:[{email:username}]})
+    .then(user =>{
+        if(user){
+            bcrypt.compare(password,user.password,function(err,result){
+                if(err){
+                    res.json({
+                        error:err
+                    })
+                }
+                if(result){
+                    //let token=jwt.sign({name:user.email},'secret',{expiresIn:'2h'})
+                    res.json({
+                        message:"Login success",
+                       //token
+                    })
+                }else{
+                    return res.json({
+                        error: 'Incorrect Password',
+                    })
+                }
+            })
+        }else{
+            return res.json({
+                error: 'User Not Found'
+            })
+        }
+    })
     })
 
-    if (email == usermail){
-        if (password == userpass) {
-            res.json({ msg: "Success" })
-        }
-        else{
-            res.json({ msg: "Password is incorrect"})
-        }
-    }
-    else{
-        res.json({ msg: "Email doesn't exist" })
-    }
-})
 
-module.exports = signinRouter
+module.exports = loginRouter
